@@ -1,0 +1,120 @@
+<!-- templates/courses.html -->
+{% extends 'base.html' %}
+{% block content %}
+<h2>Курсы</h2>
+
+<div style="max-height: 600px; overflow-y: auto; width: 100%;">
+<table id="courses-table" class="table table-sm w-100">
+    <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Тема</th>
+        <th>Статус</th>
+        <th>Преподаватель</th>
+        <th>Студентов</th>
+        <th>Действия</th>
+    </tr>
+
+    {% for course in courses %}
+    <!-- СТРОКА С ДАННЫМИ О КУРСЕ -->
+    <tr style="background-color: {% if course.status == 'активен' %}#d4edda;{% else %}#f8d7da;{% endif %};">
+        <td>{{ course.id }}</td>
+        <td>{{ course.title }}</td>
+        <td>{{ course.topic }}</td>
+        <td>{{ course.status }}</td>
+
+        {% set teacher = repo.find_teacher_by_id(course.teacher_id) %}
+        <td>
+            {% if teacher %}
+                <span style="padding: 3px 6px; border-radius: 4px;">{{ teacher.name }}</span>
+            {% else %}
+                Не назначен
+            {% endif %}
+        </td>
+
+        <td>{{ course.students|length }}</td>
+        <td>
+            <!-- КНОПКИ УДАЛИТЬ И РЕДАКТИРОВАТЬ -->
+            <form action="{{ url_for('delete_course', course_id=course.id) }}" method="post" style="display:inline-block; margin-right: 5px;">
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Удалить курс?')">Удалить</button>
+            </form>
+
+            <button class="btn btn-info btn-sm edit-btn"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#editRow{{ course.id }}">
+                Редактировать
+            </button>
+        </td>
+    </tr>
+
+    <!-- СКРЫТАЯ СТРОКА ДЛЯ РЕДАКТИРОВАНИЯ ЭТОГО КОНКРЕТНОГО КУРСА -->
+    <tr id="editRow{{ course.id }}" class="collapse">
+        <td colspan="7" style="padding: 5px 10px; background-color: #f8f9fa; text-align: right;">
+            <div style="display: inline-block; width: 100%; text-align: left;">
+                <form id="assignForm{{ course.id }}" style="display: inline-block; width: 100%;">
+                    <input type="hidden" name="course_id" value="{{ course.id }}">
+
+                    <label for="teacherSelect{{ course.id }}" class="form-label me-2">Преподаватель:</label>
+                    <select class="form-select d-inline-block w-auto" style="width: 200px;" id="teacherSelect{{ course.id }}" name="teacher_id">
+                        <option value="">Не назначен</option>
+                        {% for teacher in repo.teachers %}
+                        <option value="{{ teacher.id }}" {% if teacher.id == course.teacher_id %}selected{% endif %}>
+                            {{ teacher.name }}
+                        </option>
+                        {% endfor %}
+                    </select><br>
+
+                    <button type="submit" class="btn btn-primary mt-2 ms-2">Сохранить</button>
+                </form>
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+
+<hr>
+
+<!-- БЛОК СОЗДАНИЯ НОВОГО КУРСА -->
+<div style="background-color: #e9ecef; padding: 20px; border-radius: 10px; margin-top: 20px;">
+    <h3>Создать новый курс</h3>
+    <form action="{{ url_for('add_course') }}" method="post">
+        <label for="titleCreate" class="me-2">Название курса:</label>
+        <input type="text" id="titleCreate" name="title" required><br><br>
+
+        <label for="topicCreate" class="me-2">Тема курса:</label>
+        <input type="text" id="topicCreate" name="topic" required><br><br>
+
+        <label for="teacherSelectCreate" class="me-2">Преподаватель:</label>
+        <select id="teacherSelectCreate" name="teacher_id">
+            <option value="">Не назначать сразу</option>
+            {% for teacher in repo.teachers %}
+            <option value="{{ teacher.id }}">{{ teacher.name }} ({{ teacher.specialization }})</option>
+            {% endfor %}
+        </select><br><br>
+
+        <button type="submit" class="btn btn-primary">Создать курс</button>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Обработка отправки формы через AJAX
+  {% for course in courses %}
+  document.getElementById('assignForm{{ course.id }}').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const formData = new FormData(this);
+
+      fetch("{{ url_for('assign_teacher') }}", {
+          method: 'POST',
+          body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+          alert(data.message); // Показываем результат
+          location.reload(); // Перезагружаем страницу
+      });
+  });
+  {% endfor %}
+</script>
+{% endblock %}

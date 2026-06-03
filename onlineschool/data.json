@@ -1,0 +1,166 @@
+{
+    "students": [
+        {
+            "id": 1,
+            "name": "Иванов Иван",
+            "email": "ivanov@mail.ru",
+            "history": []
+        },
+        {
+            "id": 2,
+            "name": "Петрова Мария",
+            "email": "petrova@mail.ru",
+            "history": [
+                {
+                    "course_title": "Алгебра для начинающих",
+                    "grade": 5,
+                    "status": "завершён"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "name": "Сидоров Алексей",
+            "email": "sidorov@mail.ru",
+            "history": []
+        },
+        {
+            "id": 4,
+            "name": "Кузнецова Ольга",
+            "email": "kuznecova@mail.ru",
+            "history": [
+                {
+                    "course_title": "Основы механики",
+                    "grade": 3,
+                    "status": "завершён"
+                },
+                {
+                    "course_title": "Введение в Python",
+                    "grade": 5,
+                    "status": "завершён"
+                },
+                {
+                    "course_title": "Введение в Python",
+                    "grade": 5,
+                    "status": "завершён"
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "name": "Васильев Дмитрий",
+            "email": "vasiliev@mail.ru",
+            "history": [
+                {
+                    "course_title": "Введение в Python",
+                    "grade": 5,
+                    "status": "завершён"
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "name": "Токарев Григорий",
+            "email": "tok@mail.ru",
+            "history": []
+        },
+        {
+            "id": 8,
+            "name": "апвап",
+            "email": "fgdf@fgfd",
+            "history": []
+        }
+    ],
+    "teachers": [
+        {
+            "id": 1,
+            "name": "Петров Сергей Валерьевич",
+            "specialization": "Математика"
+        },
+        {
+            "id": 2,
+            "name": "Смирнова Елена Игоревна",
+            "specialization": "Физика"
+        },
+        {
+            "id": 3,
+            "name": "Волков Андрей Борисович",
+            "specialization": "Программирование"
+        },
+        {
+            "id": 4,
+            "name": "Евгения Рыжова Андреевна",
+            "specialization": "Химия"
+        }
+    ],
+    "courses": [
+        {
+            "id": 1,
+            "title": "Алгебра для начинающих",
+            "topic": "Математика",
+            "status": "завершён",
+            "students": [
+                1,
+                2,
+                3
+            ],
+            "teacher_id": 2
+        },
+        {
+            "id": 2,
+            "title": "Основы механики",
+            "topic": "Физика",
+            "status": "завершён",
+            "students": [
+                2,
+                4,
+                5
+            ],
+            "teacher_id": 2
+        },
+        {
+            "id": 3,
+            "title": "Введение в Python",
+            "topic": "Программирование",
+            "status": "активен",
+            "students": [
+                3,
+                4,
+                5
+            ],
+            "teacher_id": 3
+        },
+        {
+            "id": 4,
+            "title": "Геометрия. Углубленный курс",
+            "topic": "Математика",
+            "status": "активен",
+            "students": [
+                1,
+                3
+            ],
+            "teacher_id": 1
+        },
+        {
+            "id": 5,
+            "title": "Python",
+            "topic": "Python для базы",
+            "status": "завершён",
+            "students": [],
+            "teacher_id": null
+        },
+        {
+            "id": 6,
+            "title": "Профессиональная Математика",
+            "topic": "Углублённое изучение Математики на основе Алгебра-логики",
+            "status": "активен",
+            "students": [],
+            "teacher_id": null
+        }
+    ],
+    "next_ids": {
+        "student": 9,
+        "teacher": 6,
+        "course": 7
+    }
+}
